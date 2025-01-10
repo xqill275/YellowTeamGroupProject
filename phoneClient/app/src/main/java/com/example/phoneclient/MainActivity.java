@@ -19,10 +19,19 @@ public class MainActivity extends AppCompatActivity {
         ));
         setContentView(rootLayout);
 
+        // Create an instance of GameController
         GameController gameController = new GameController(this, rootLayout);
 
+        // Ensure testNodes is called after the layout is measured
         rootLayout.post(() -> {
+            // Use GameController to create and display 10 nodes
             gameController.testNodes(10);
+
+            // Example: Access the list of Node objects
+            for (Node node : gameController.getNodes()) {
+                // You can log or manipulate node data here
+                System.out.println("Node number: " + node.getNodeNum());
+            }
         });
     }
 }
