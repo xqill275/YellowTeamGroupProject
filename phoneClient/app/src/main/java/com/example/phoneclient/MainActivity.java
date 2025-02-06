@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Resources res = getResources();
-        int image = R.drawable.game_map1; // change this to chnage background image of the app
+        int image = R.drawable.game_map1; // change this to change background image of the app
         Drawable BGimage = ResourcesCompat.getDrawable(res, image, null);
         super.onCreate(savedInstanceState);
 
