@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Resources res = getResources();
-        int image = R.drawable.download; // change this to chnage background image of the app
+        int image = R.drawable.game_map1; // change this to chnage background image of the app
         Drawable BGimage = ResourcesCompat.getDrawable(res, image, null);
         super.onCreate(savedInstanceState);
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         // Ensure testNodes is called after the layout is measured
         rootLayout.post(() -> {
             // Use GameController to create and display 10 nodes
-            gameController.testNodes(100);
+            gameController.testNodes(7);
 
             // Example: Access the list of Node objects
             for (Node node : gameController.getNodes()) {
