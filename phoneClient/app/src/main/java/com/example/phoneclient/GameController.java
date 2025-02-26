@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -99,6 +100,16 @@ public class GameController {
             JSONArray locationsArray = mapObject.getJSONArray("locations");
             JSONArray connectionsArray = mapObject.getJSONArray("connections");
 
+            HashMap<Integer, String> nodeColours = new HashMap<>();
+            for (int i = 0; i < connectionsArray.length(); i++) {
+                JSONObject connectionObject = connectionsArray.getJSONObject(i);
+                int locationA = connectionObject.getInt("locationA");
+                int locationB = connectionObject.getInt("locationB");
+                String ticketColour = connectionObject.getString("ticket");
+
+                nodeColours.put(locationA, ticketColour);
+                nodeColours.put(locationB, ticketColour);
+            }
             // Parse locations (nodes)
             for (int i = 0; i < locationsArray.length(); i++) {
                 JSONObject nodeObject = locationsArray.getJSONObject(i);
@@ -106,14 +117,18 @@ public class GameController {
                 int xPos = nodeObject.getInt("xPos");
                 int yPos = nodeObject.getInt("yPos");
 
+
                 // Scale the positions
                 int scaledX = (int) ((xPos / (float) mapWidth) * screenWidth);
                 int scaledY = (int) ((yPos / (float) mapHeight) * screenHeight);
 
+                String colourName = nodeColours.getOrDefault(nodeNum, "Grey");
+                int colour = getColourFromName(colourName);
+
                 Node node = createNode(nodeNum, scaledX, scaledY);
                 nodes.add(node);
 
-                NodeView nodeView = createNodeView(node);
+                NodeView nodeView = createNodeView(node, colour);
                 positionNodeView(nodeView, scaledX, scaledY);
 
                 rootLayout.post(() -> rootLayout.addView(nodeView));
@@ -148,6 +163,17 @@ public class GameController {
         }
     }
 
+    private int getColourFromName(String colourName) {
+        switch (colourName.toLowerCase()){
+            case "red": return Color.RED;
+            case "blue": return Color.BLUE;
+            case "green": return Color.GREEN;
+            case "yellow": return Color.YELLOW;
+
+            default: return Color.BLACK;
+        }
+    }
+
     private Node getNodeById(int nodeId) {
         for (Node node : nodes) {
             if (node.getNodeNum() == nodeId) {
@@ -166,10 +192,10 @@ public class GameController {
         return new Node(nodeNum, acceptedTravelMethods, connectedNodes, stationColours, x, y);
     }
 
-    private NodeView createNodeView(Node node) {
+    private NodeView createNodeView(Node node, int colour) {
         NodeView nodeView = new NodeView(context);
         int circleColour = generateRandomColor();
-        nodeView.setNodeData(node.getNodeNum(), circleColour);
+        nodeView.setNodeData(node.getNodeNum(), colour);
         return nodeView;
     }
 

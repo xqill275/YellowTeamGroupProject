@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         // Fetch map data from server
 
         rootLayout.post(() -> {
-            gc.startGame(1);
+            gc.startGame(901);
         });
     }
 
