@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-// This class represents a custom view for displaying a Node as a circle with its number in the centre.
+// This class represents a custom view for displaying a NODE as a circle with its number in the centre.
 public class NodeView extends View {
 
     // The unique number assigned to the node
