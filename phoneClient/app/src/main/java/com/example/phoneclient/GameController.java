@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Canvas;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.util.Log;
@@ -147,6 +148,7 @@ public class GameController {
             JSONObject connectionObject = connectionsArray.getJSONObject(i);
             int locationA = connectionObject.getInt("locationA");
             int locationB = connectionObject.getInt("locationB");
+            String ticketColour = connectionObject.getString("ticket");
 
             // Get the corresponding nodes
             Node nodeA = getNodeById(locationA);
@@ -154,10 +156,16 @@ public class GameController {
 
             // If both nodes exist, draw a connection (a line)
             if (nodeA != null && nodeB != null) {
+                int colour = getColourFromName(ticketColour);
+                float startX = nodeA.getX() + (NODE_SIZE/2f);
+                float startY = nodeA.getY() + (NODE_SIZE/2f);
+                float endX = nodeB.getX() + (NODE_SIZE/2f);
+                float endY = nodeB.getY() + (NODE_SIZE/2f);
                 rootLayout.post(() -> {
+
                     // Create a LineView to draw the connection
-                    LineView lineView = new LineView(context, nodeA.getX(), nodeA.getY(), nodeB.getX(), nodeB.getY());
-                    rootLayout.addView(lineView);
+                    LineView lineView = new LineView(context, startX, startY, endX, endY, colour);
+                    rootLayout.addView(lineView, 0);
                 });
             }
         }
@@ -216,19 +224,20 @@ public class GameController {
     }
 
     // Custom View to represent the connection line
-    public class LineView extends FrameLayout {
+    public class LineView extends View {
         private Paint paint;
         private float startX, startY, endX, endY;
 
-        public LineView(Context context, float startX, float startY, float endX, float endY) {
+        public LineView(Context context, float startX, float startY, float endX, float endY, int colour) {
             super(context);
             this.startX = startX;
             this.startY = startY;
             this.endX = endX;
             this.endY = endY;
             paint = new Paint();
-            paint.setColor(Color.BLACK);
-            paint.setStrokeWidth(5);
+            paint.setColor(colour);
+            paint.setStrokeWidth(10);
+            paint.setAntiAlias(true);
         }
 
         @Override
