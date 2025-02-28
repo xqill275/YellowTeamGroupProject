@@ -5,32 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainMenu"
-    tools:layout_editor_absoluteX="-41dp"
-    tools:layout_editor_absoluteY="-11dp">
-
-    <Button
-        android:id="@+id/CreateGame"
-        android:layout_width="120dp"
-        android:layout_height="71dp"
-        android:layout_marginBottom="47dp"
-        android:text="Create a Game"
-        app:layout_constraintBottom_toTopOf="@+id/JoinGame"
-        app:layout_constraintEnd_toEndOf="@+id/JoinGame"
-        app:layout_constraintHorizontal_bias="0.475"
-        app:layout_constraintStart_toStartOf="@+id/JoinGame"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <Button
-        android:id="@+id/JoinGame"
-        android:layout_width="160dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="149dp"
-        android:text="Join Game"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CreateGame" />
+    tools:context=".MainMenu">
 
     <ImageView
         android:id="@+id/imageView"
@@ -38,10 +13,32 @@
         android:layout_height="0dp"
         android:layout_marginTop="34dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/CreateGame"
+        app:layout_constraintBottom_toTopOf="@+id/CreateButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
+
+    <Button
+        android:id="@+id/CreateButton"
+        android:layout_width="120dp"
+        android:layout_height="71dp"
+        android:layout_marginBottom="47dp"
+        android:text="Create Game"
+        app:layout_constraintBottom_toTopOf="@+id/JoinButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <Button
+        android:id="@+id/JoinButton"
+        android:layout_width="160dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="149dp"
+        android:text="Join Game"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CreateButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
