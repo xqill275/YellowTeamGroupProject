@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -15,17 +16,21 @@ public class MainMenu extends AppCompatActivity {
     Button joinGameButton;
     Button createGameButton;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main_menu);
 
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
 
         joinGameButton = findViewById(R.id.JoinButton);
         createGameButton = findViewById(R.id.CreateButton);
@@ -50,3 +55,4 @@ public class MainMenu extends AppCompatActivity {
         startActivity(switchActivityIntent);
     }
 }
+
