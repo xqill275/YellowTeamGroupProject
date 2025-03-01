@@ -40,7 +40,7 @@ public class MainMenu extends AppCompatActivity {
         joinGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchActivity(JoinGameActivity.class);
+                switchActivity(JoinGame.class);
             }
         });
     }
@@ -49,4 +49,5 @@ public class MainMenu extends AppCompatActivity {
         Intent switchActivityIntent = new Intent(this, activityClass);
         startActivity(switchActivityIntent);
     }
+
 }
