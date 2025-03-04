@@ -42,7 +42,6 @@ public class CreateLobbyScreen extends AppCompatActivity {
     String BASE_URL = "http://trinity-developments.co.uk/";
     ArrayList<Integer> mapIds; // Store Map IDs
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,14 +98,14 @@ public class CreateLobbyScreen extends AppCompatActivity {
 
                         JSONArray maps = new JSONArray(responseData);
                         ArrayList<String> mapNames = new ArrayList<>();
-                        mapIds = new ArrayList<>(); // Store map IDs
+                        mapIds = new ArrayList<>();
 
                         for (int i = 0; i < maps.length(); i++) {
                             JSONObject map = maps.getJSONObject(i);
 
                             if (map.has("mapName")) {
                                 mapNames.add(map.getString("mapName"));
-                                mapIds.add(map.getInt("mapId")); // Store the mapId too
+                                mapIds.add(map.getInt("mapId"));
                             } else {
                                 Log.w(TAG, "Map JSON Missing 'mapName' key at index " + i);
                             }
@@ -128,8 +127,6 @@ public class CreateLobbyScreen extends AppCompatActivity {
             }
         });
     }
-
-
 
     public void createGame(String gameName, int mapID, boolean shortGame) {
         String url = BASE_URL + "games";
@@ -167,21 +164,62 @@ public class CreateLobbyScreen extends AppCompatActivity {
                             int gameId = jsonResponse.getInt("gameId");
                             String message = jsonResponse.getString("message");
 
-                            runOnUiThread(() -> {
-                                Toast.makeText(CreateLobbyScreen.this, "✅ Game Created: " + message, Toast.LENGTH_LONG).show();
-
-                                // Automatically go to Lobby Screen
-                                //Intent intent = new Intent(CreateLobbyScreen.this, LobbyScreen.class);
-                                //intent.putExtra("gameId", gameId);
-                                //startActivity(intent);
-                                //finish();
-                            });
+                            joinHostPlayer(gameId);
 
                         } catch (Exception e) {
                             Log.e(TAG, "JSON Error: " + e.getMessage());
                         }
                     } else {
                         runOnUiThread(() -> Toast.makeText(CreateLobbyScreen.this, "Server Error: " + response.code(), Toast.LENGTH_SHORT).show());
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e(TAG, "Request Error: " + e.getMessage());
+        }
+    }
+
+    public void joinHostPlayer(int gameId) {
+        Log.e(TAG, "trying to create host player");
+        String url = BASE_URL + "games/" + gameId + "/players";
+        MediaType JSON = MediaType.get("application/json; charset=utf-8");
+
+        try {
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("playerName", "Host");
+
+            RequestBody body = RequestBody.create(requestBody.toString(), JSON);
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e(TAG, "Failed to join Host: " + e.getMessage());
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (response.isSuccessful()) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response.body().string());
+                            int playerId = jsonResponse.getInt("playerId");
+
+                            runOnUiThread(() -> {
+                                Intent intent = new Intent(CreateLobbyScreen.this, LobbyScreen.class);
+                                intent.putExtra("gameId", gameId);
+                                intent.putExtra("playerId", playerId);
+                                startActivity(intent);
+                                finish();
+                            });
+
+                        } catch (Exception e) {
+                            Log.e(TAG, "JSON Parsing Error: " + e.getMessage());
+                        }
                     }
                 }
             });

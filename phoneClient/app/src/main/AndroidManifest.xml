@@ -16,7 +16,9 @@
         android:theme="@style/Theme.PhoneClient"
         tools:targetApi="31">
         <activity
-
+            android:name=".LobbyScreen"
+            android:exported="false" />
+        <activity
             android:name=".PickUsername"
             android:exported="false" />
         <activity

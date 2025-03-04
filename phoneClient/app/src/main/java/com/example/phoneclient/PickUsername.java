@@ -79,10 +79,15 @@ public class PickUsername extends AppCompatActivity {
                     String responseData = response.body().string();
                     try {
                         JSONObject jsonResponse = new JSONObject(responseData);
+                        int playerId = jsonResponse.getInt("playerId");
                         String message = jsonResponse.getString("message");
                         runOnUiThread(() -> {
-                            // You can display a message or navigate to the next screen here
                             System.out.println(message);
+                            Intent intent = new Intent(PickUsername.this, LobbyScreen.class);
+                            intent.putExtra("gameId", gameId);
+                            intent.putExtra("playerId", playerId);
+                            startActivity(intent);
+                            finish();
                         });
                     } catch (Exception e) {
                         e.printStackTrace();
