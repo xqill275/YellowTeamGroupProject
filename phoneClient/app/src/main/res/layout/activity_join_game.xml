@@ -5,6 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/buttonRefresh"
+        android:layout_width="105dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="42dp"
+        android:text="Refresh"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
     <TextView
         android:id="@+id/textViewLobby5"
         android:layout_width="294dp"
@@ -60,7 +70,7 @@
         android:layout_width="148dp"
         android:layout_height="140dp"
         android:layout_marginStart="131dp"
-        android:layout_marginTop="78dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="132dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,5 +86,33 @@
         android:text="⇦Back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/textViewSearch"
+        android:layout_width="69dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="11dp"
+        android:text="Search..."
+        app:layout_constraintStart_toEndOf="@+id/buttonRefresh"
+        tools:layout_editor_absoluteY="245dp" />
+
+    <Button
+        android:id="@+id/buttonSearch"
+        android:layout_width="53dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="4dp"
+        android:insetBottom="4dp"
+        android:text="🔍"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintStart_toEndOf="@+id/textViewSearch"
+        tools:layout_editor_absoluteY="239dp" />
+
+    <Button
+        android:id="@+id/buttonJoinGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Join Game"
+        tools:layout_editor_absoluteX="142dp"
+        tools:layout_editor_absoluteY="667dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

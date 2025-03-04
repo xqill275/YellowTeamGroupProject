@@ -8,6 +8,7 @@
     tools:context=".LobbyScreen">
 
     <TextView
+
         android:id="@+id/playerNamesTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,4 +28,6 @@
         android:text="Refresh"
         app:layout_constraintTop_toBottomOf="@id/playerNamesTextView"
         app:layout_constraintStart_toStartOf="parent"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
