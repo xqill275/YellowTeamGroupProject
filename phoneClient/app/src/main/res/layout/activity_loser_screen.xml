@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoserScreen">
+
+    <Button
+        android:id="@+id/replayButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Play Again"
+        tools:layout_editor_absoluteX="147dp"
+        tools:layout_editor_absoluteY="484dp" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="237dp"
+        android:layout_height="310dp"
+        app:srcCompat="@drawable/logo"
+        tools:layout_editor_absoluteX="87dp"
+        tools:layout_editor_absoluteY="25dp" />
+
+    <TextView
+        android:id="@+id/LossText"
+        android:layout_width="258dp"
+        android:layout_height="122dp"
+        android:text="Oh no! You failed to find Nick, it looks like you're going to fail your assignment. "
+        tools:layout_editor_absoluteX="78dp"
+        tools:layout_editor_absoluteY="351dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
