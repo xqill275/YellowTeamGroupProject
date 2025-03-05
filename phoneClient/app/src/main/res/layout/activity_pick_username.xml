@@ -5,38 +5,68 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".PickUsername">
 
     <EditText
         android:id="@+id/editTextText2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="199dp"
+        android:layout_width="259dp"
+        android:layout_height="87dp"
+        android:layout_marginTop="244dp"
         android:ems="10"
+        android:fontFamily="@font/aclonica"
         android:inputType="text"
-        android:text="Username"
+        android:text="Type Here:"
+        android:textColor="#FBFBFB"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="47dp"
+        android:layout_width="156dp"
+        android:layout_height="58dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/aclonica"
         android:text="Join Game"
+        android:textColor="#000000"
         app:layout_constraintBaseline_toBaselineOf="@+id/button4"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:strokeColor="#4169E1"
+        app:strokeWidth="5dp" />
 
     <Button
         android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="62dp"
-        android:layout_marginTop="219dp"
+        android:layout_width="156dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="220dp"
+        android:backgroundTint="@color/white"
+        android:backgroundTintMode="add"
+        android:fontFamily="@font/aclonica"
         android:text="Button"
+        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextText2"
+        app:layout_constraintVertical_bias="1.0"
+        app:strokeColor="#4169e1"
+        app:strokeWidth="5dp" />
+
+    <TextView
+        android:id="@+id/EnterUsername"
+        android:layout_width="347dp"
+        android:layout_height="36dp"
+        android:background="#000000"
+        android:backgroundTint="#00FFFEFE"
+        android:fontFamily="@font/aclonica"
+        android:text="Please enter a Username:"
+        android:textColor="#FBFBFB"
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="155dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

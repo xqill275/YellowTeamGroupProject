@@ -5,15 +5,23 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".LoserScreen">
 
     <Button
         android:id="@+id/replayButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:width="200dp"
+        android:height="70dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/aclonica"
         android:text="Play Again"
-        tools:layout_editor_absoluteX="147dp"
-        tools:layout_editor_absoluteY="484dp" />
+        android:textColor="#000000"
+        app:strokeColor="#4169E1"
+        app:strokeWidth="5dp"
+        tools:layout_editor_absoluteX="105dp"
+        tools:layout_editor_absoluteY="539dp" />
 
     <ImageView
         android:id="@+id/imageView4"
@@ -25,9 +33,13 @@
 
     <TextView
         android:id="@+id/LossText"
-        android:layout_width="258dp"
-        android:layout_height="122dp"
-        android:text="Oh no! You failed to find Nick, it looks like you're going to fail your assignment. "
-        tools:layout_editor_absoluteX="78dp"
+        android:layout_width="365dp"
+        android:layout_height="175dp"
+        android:fontFamily="@font/aclonica"
+        android:text="Oh no! \nYou failed to find Nick! \n\n It looks like you're going to fail your assignment. "
+        android:textAlignment="center"
+        android:textColor="#F8F8F8"
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="28dp"
         tools:layout_editor_absoluteY="351dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
