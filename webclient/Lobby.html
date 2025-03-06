@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,22 +26,11 @@
             margin: 10px;
             cursor: pointer;
             font-size: 18px;
-            color: #130E6A; /* Original color */
+            color: #130E6A;
             border-radius: 5px;
         }
         button:hover {
             background-color: #1F78C1;
-        }
-        .players-list {
-            margin-top: 20px;
-            text-align: left;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 5px;
-        }
-        .player {
-            padding: 5px;
-            border-bottom: 1px solid white;
         }
         .map-container {
             margin-top: 20px;
@@ -58,56 +44,80 @@
             font-size: 16px;
             margin-top: 10px;
         }
-        /* New styles for the next page button */
         .next-page {
             display: inline-block;
             background-color: #48ACE9;
-            color: white; /* Change font color to white */
+            color: white;
             padding: 10px 20px;
             margin: 10px;
             cursor: pointer;
             font-size: 18px;
             border-radius: 5px;
-            text-decoration: none; /* Remove underline from links */
+            text-decoration: none;
         }
         .next-page:hover {
             background-color: #1F78C1;
         }
-        /* Align the button to the right */
         .button-container {
             display: flex;
-            justify-content: flex-end; /* Align items to the right */
-            margin-top: 20px; /* Add space above the button */
+            justify-content: flex-end;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="lobby-container">
-        <h1>Welcome to Operation Nick</h1>
-        <p>Lobby ID: <span id="lobby-id">12345</span></p>
-        <p>Waiting for players...</p>
-        
-        <div class="map-container">
-            <h3>Choose Game</h3>
-            <select id="game-select">
-                <option value="Choose the Lobby">Choose the Lobby</option>
-                <option value="Ben's Test Game lobby">Ben's Test Game lobby</option>
-                <option value="Yellow Team Game lobby">Yellow Team Game lobby</option>
-                <option value="Yellow TeamLongGametest 1 lobby">Yellow TeamLongGametest 1 lobby</option>
-                <option value="Horsforth test yellowTeam lobby">Horsforth test yellowTeam lobby</option>
-                <option value="Yello Team pwdjhpiwd  lobby">Yello Team pwdjhpiwd  lobby</option>
-                <option value="Yellow Team Test2 lobby">Yellow Team Test2 lobby</option>
-                <option value="Ben's new test game with typing support lobby">Ben's new test game with typing support lobby</option>
-                <option value="Yello Team Test5 lobby">Yello Team Test5 lobby</option>
-                <option value="Yello Team Test6 lobby">Yello Team Test6 lobby</option>
-            </select>
-        </div>
-        
-        <button onclick="startGame()">Start Game</button>
-
-        <div class="button-container">
-            <a href="map.html" class="next-page">Next Page</a>
-        </div>
+<div class="lobby-container">
+    <h1>Welcome to Operation Nick</h1>
+    <p>Lobby ID: <span id="lobby-id">12345</span></p>
+    <p>Waiting for players...</p>
+    
+    <div class="map-container">
+        <h3>Choose Game</h3>
+        <select id="game-select">
+            <option value="">Loading Games...</option>
+        </select>
     </div>
+
+    <button onclick="startGame()">Start Game</button>
+
+    <div class="button-container">
+        <a href="map.html" class="next-page">Next Page</a>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("http://trinity-development.co.uk/games") 
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data); // For debugging
+
+      const select = document.getElementById("game-select");
+
+      // Clear existing options
+      select.innerHTML = `<option value="">Choose the Lobby</option>`;
+
+      data.games.forEach(game => {
+        const option = document.createElement("option");
+        option.value = game.gameId;
+        option.textContent = game.gameName;
+        select.appendChild(option);
+      });
+    })
+    .catch(error => {
+      console.error("Fetch error:", error);
+      document.getElementById("game-select").innerHTML = `<option value="">Failed to load games</option>`;
+    });
+});
+
+function startGame() {
+  alert("Game Started!");
+}
+</script>
 </body>
 </html>
