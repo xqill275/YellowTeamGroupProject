@@ -1,0 +1,113 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operation-Nick Lobby</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0a3d62;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+        .lobby-container {
+            background: rgba(10, 1, 1, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+            width: 50%;
+        }
+        button {
+            background-color: #48ACE9;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #130E6A; /* Original color */
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #1F78C1;
+        }
+        .players-list {
+            margin-top: 20px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .player {
+            padding: 5px;
+            border-bottom: 1px solid white;
+        }
+        .map-container {
+            margin-top: 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 5px;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        /* New styles for the next page button */
+        .next-page {
+            display: inline-block;
+            background-color: #48ACE9;
+            color: white; /* Change font color to white */
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+            text-decoration: none; /* Remove underline from links */
+        }
+        .next-page:hover {
+            background-color: #1F78C1;
+        }
+        /* Align the button to the right */
+        .button-container {
+            display: flex;
+            justify-content: flex-end; /* Align items to the right */
+            margin-top: 20px; /* Add space above the button */
+        }
+    </style>
+</head>
+<body>
+    <div class="lobby-container">
+        <h1>Welcome to Operation Nick</h1>
+        <p>Lobby ID: <span id="lobby-id">12345</span></p>
+        <p>Waiting for players...</p>
+        
+        <div class="map-container">
+            <h3>Choose Game</h3>
+            <select id="game-select">
+                <option value="Choose the Lobby">Choose the Lobby</option>
+                <option value="Ben's Test Game lobby">Ben's Test Game lobby</option>
+                <option value="Yellow Team Game lobby">Yellow Team Game lobby</option>
+                <option value="Yellow TeamLongGametest 1 lobby">Yellow TeamLongGametest 1 lobby</option>
+                <option value="Horsforth test yellowTeam lobby">Horsforth test yellowTeam lobby</option>
+                <option value="Yello Team pwdjhpiwd  lobby">Yello Team pwdjhpiwd  lobby</option>
+                <option value="Yellow Team Test2 lobby">Yellow Team Test2 lobby</option>
+                <option value="Ben's new test game with typing support lobby">Ben's new test game with typing support lobby</option>
+                <option value="Yello Team Test5 lobby">Yello Team Test5 lobby</option>
+                <option value="Yello Team Test6 lobby">Yello Team Test6 lobby</option>
+            </select>
+        </div>
+        
+        <button onclick="startGame()">Start Game</button>
+
+        <div class="button-container">
+            <a href="map.html" class="next-page">Next Page</a>
+        </div>
+    </div>
+</body>
+</html>
