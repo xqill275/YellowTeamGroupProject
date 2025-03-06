@@ -100,5 +100,42 @@
         <!-- Next Page Button -->
         <a href="map.html" class="next-page">Next Page</a>
     </div>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          fetch("http://trinity-development.co.uk/games") 
+            .then(response => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then(data => {
+              console.log(data); // For debugging
+        
+              const select = document.getElementById("game-select");
+        
+              // Clear existing options
+              select.innerHTML = `<option value="">Choose the Lobby</option>`;
+        
+              data.games.forEach(game => {
+                const option = document.createElement("option");
+                option.value = game.gameId;
+                option.textContent = game.gameName;
+                select.appendChild(option);
+              });
+            })
+            .catch(error => {
+              console.error("Fetch error:", error);
+              document.getElementById("game-select").innerHTML = `<option value="">Failed to load games</option>`;
+            });
+        });
+        
+        function startGame() {
+          alert("Game Started!");
+        }
+        </script>
 </body>
 </html>
