@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".JoinGame">
 
     <ImageView
@@ -25,18 +26,25 @@
         android:layout_height="66dp"
         android:layout_marginStart="37dp"
         android:layout_marginBottom="40dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/aclonica"
         android:text="⇦Back"
+        android:textColor="#050303"
         app:layout_constraintBottom_toTopOf="@+id/spinner2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:strokeColor="#4169E1"
+        app:strokeWidth="5dp" />
 
     <Spinner
         android:id="@+id/spinner2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="346dp"
+        android:layout_height="35dp"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="63dp"
+        android:background="#F2F1F1"
+        android:backgroundTint="#FDFDFD"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,9 +55,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="244dp"
+        android:width="200dp"
+        android:height="70dp"
+        android:backgroundTint="@color/white"
+        android:fontFamily="@font/aclonica"
         android:text="Join game"
+        android:textColor="#090606"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner2"
+        app:strokeColor="#4169E1"
+        app:strokeWidth="5dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#120F0F"
     tools:context=".LobbyScreen">
 
     <TextView
@@ -12,22 +13,31 @@
         android:id="@+id/playerNamesTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/aclonica"
         android:text="Players:"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/refreshButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:width="200dp"
+        android:height="70dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/aclonica"
         android:text="Refresh"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/playerNamesTextView"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:strokeColor="#4169E1"
+        app:strokeWidth="5dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

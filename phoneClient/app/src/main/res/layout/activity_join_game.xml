@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#000000">
 
     <Button
         android:id="@+id/buttonRefresh"
@@ -11,9 +12,15 @@
         android:layout_height="52dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="42dp"
+        android:backgroundTint="#FBFBFB"
+        android:fontFamily="@font/aclonica"
         android:text="Refresh"
+        android:textColor="#211717"
+        android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/backButton"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:strokeColor="#4169E1"
+        app:strokeWidth="5dp" />
 
     <TextView
         android:id="@+id/textViewLobby5"
@@ -22,6 +29,7 @@
         android:layout_marginStart="42dp"
         android:layout_marginTop="26dp"
         android:text="TextView"
+        android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLobby4" />
 
@@ -32,6 +40,7 @@
         android:layout_marginStart="42dp"
         android:layout_marginTop="26dp"
         android:text="TextView"
+        android:textColor="#F6F6F6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLobby3" />
 
@@ -42,6 +51,7 @@
         android:layout_marginStart="42dp"
         android:layout_marginTop="26dp"
         android:text="TextView"
+        android:textColor="#FFFDFD"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLobby1" />
 
@@ -52,6 +62,7 @@
         android:layout_marginStart="42dp"
         android:layout_marginTop="32dp"
         android:text="TextView"
+        android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/backButton" />
 
@@ -62,6 +73,7 @@
         android:layout_marginStart="42dp"
         android:layout_marginTop="26dp"
         android:text="TextView"
+        android:textColor="#FBFBFB"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLobby2" />
 
@@ -83,16 +95,25 @@
         android:layout_height="52dp"
         android:layout_marginStart="37dp"
         android:layout_marginTop="42dp"
+        android:backgroundTint="#FDFDFD"
+        android:fontFamily="@font/aclonica"
         android:text="⇦Back"
+        android:textColor="#050404"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:strokeColor="#4169E1"
+        app:strokeWidth="5dp" />
 
     <TextView
         android:id="@+id/textViewSearch"
         android:layout_width="69dp"
         android:layout_height="33dp"
         android:layout_marginStart="11dp"
+        android:background="#FBFBFB"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/aclonica"
         android:text="Search..."
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/buttonRefresh"
         tools:layout_editor_absoluteY="245dp" />
 
@@ -101,17 +122,26 @@
         android:layout_width="53dp"
         android:layout_height="39dp"
         android:layout_marginStart="4dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="sans-serif-thin"
         android:insetBottom="4dp"
         android:text="🔍"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintStart_toEndOf="@+id/textViewSearch"
+        app:strokeColor="#4169E1"
+        app:strokeWidth="5dp"
         tools:layout_editor_absoluteY="239dp" />
 
     <Button
         android:id="@+id/buttonJoinGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#F6F6F6"
+        android:fontFamily="@font/aclonica"
         android:text="Join Game"
+        android:textColor="#000000"
+        app:strokeColor="#4169E1"
+        app:strokeWidth="5dp"
         tools:layout_editor_absoluteX="142dp"
         tools:layout_editor_absoluteY="667dp" />
 

@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".CreateLobbyScreen">
 
     <TextView
@@ -12,7 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="45dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/aclonica"
         android:text="Create Game"
+        android:textColor="#FDFDFD"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Game Name"
+        android:fontFamily="@font/aclonica"
+        android:text="Please enter a game name"
+        android:textColor="#FFFCFC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -33,9 +39,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="27dp"
+        android:backgroundTint="#F6F6F6"
         android:ems="10"
+        android:fontFamily="@font/aclonica"
         android:hint="Game Name"
         android:inputType="text"
+        android:textColor="#FDFBFB"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -45,7 +54,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
-        android:text="Map"
+        android:fontFamily="@font/aclonica"
+        android:text="Please select a map below:"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -55,15 +66,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="51dp"
+        android:fontFamily="@font/aclonica"
         android:text="Game Length"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="342dp"
+        android:layout_height="37dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="291dp"
         android:layout_marginEnd="1dp"
@@ -78,6 +91,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginTop="27dp"
+        android:background="#FFFFFF"
+        android:backgroundTint="#F8F8F8"
+        android:fontFamily="@font/aclonica"
         android:text="short"
         android:textOff="Short"
         android:textOn="Long game"
@@ -89,8 +105,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="196dp"
+        android:width="200dp"
+        android:height="70dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/aclonica"
         android:text="Create Game"
+        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="#4169E1"
+        app:strokeWidth="5dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
