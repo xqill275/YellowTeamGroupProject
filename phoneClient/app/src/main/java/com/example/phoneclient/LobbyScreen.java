@@ -87,13 +87,16 @@ public class LobbyScreen extends AppCompatActivity {
                         JSONObject jsonResponse = new JSONObject(responseData);
                         JSONArray games = jsonResponse.getJSONArray("games");
 
+                        boolean gameFound = false; // Flag to check if the game is still open
+
                         for (int i = 0; i < games.length(); i++) {
                             JSONObject game = games.getJSONObject(i);
                             int currentGameId = game.getInt("gameId");
 
                             if (currentGameId == targetGameId) {
+                                gameFound = true; // Game is still open
                                 mapId = game.getInt("mapId");
-                                Log.d(TAG, "Fetched Map ID: " + mapId); // ✅ Log mapId
+                                Log.d(TAG, "Fetched Map ID: " + mapId);
 
                                 JSONArray players = game.getJSONArray("players");
                                 StringBuilder playerNames = new StringBuilder();
@@ -139,6 +142,20 @@ public class LobbyScreen extends AppCompatActivity {
                                 break;
                             }
                         }
+
+                        // If the game was not found (i.e., closed), navigate to the MainActivity
+                        if (!gameFound) {
+                            Log.d(TAG, "Game not found. It might be closed.");
+                            runOnUiThread(() -> {
+                                Intent intent = new Intent(LobbyScreen.this, MainActivity.class);
+                                intent.putExtra("gameId", gameId);
+                                intent.putExtra("mapId", mapId);
+                                intent.putExtra("playerId", playerId);
+                                startActivity(intent);
+                                finish();
+                            });
+                        }
+
                     } catch (Exception e) {
                         Log.e(TAG, "JSON Parsing Error: " + e.getMessage());
                     }
