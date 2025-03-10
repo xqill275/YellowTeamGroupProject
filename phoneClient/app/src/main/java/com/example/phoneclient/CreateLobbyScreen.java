@@ -215,6 +215,7 @@ public class CreateLobbyScreen extends AppCompatActivity {
                         try {
                             JSONObject jsonResponse = new JSONObject(response.body().string());
                             int playerId = jsonResponse.getInt("playerId");
+                            Log.e(TAG, "playerID: "+playerId);
 
                             runOnUiThread(() -> {
                                 Intent intent = new Intent(CreateLobbyScreen.this, LobbyScreen.class);

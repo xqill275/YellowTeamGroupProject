@@ -50,5 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Start the game with the received mapId
         rootLayout.post(() -> gc.startGame(mapId));
+
     }
 }
