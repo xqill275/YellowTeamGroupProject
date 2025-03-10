@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "Player ID: " + playerId);
 
         // Set Background Image
-        Drawable BGimage = ResourcesCompat.getDrawable(getResources(), R.drawable.game_map1, null);
+        Drawable BGimage = ResourcesCompat.getDrawable(getResources(), R.drawable.london_map, null);
         FrameLayout rootLayout = new FrameLayout(this);
         rootLayout.setLayoutParams(new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         // Start the game with the correct mapId
         rootLayout.post(() -> {
             Log.d(TAG, "Starting Game with Map ID: " + mapId);
-            gc.startGame(1); // Pass the mapId to startGame
+            gc.startGame(902); // Pass the mapId to startGame
         });
     }
 }
