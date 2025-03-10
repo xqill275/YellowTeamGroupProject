@@ -2,12 +2,17 @@ package com.example.phoneclient;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+
+
+import androidx.activity.EdgeToEdge;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,10 +41,18 @@ public class LobbyScreen extends AppCompatActivity {
 
     int gameId, playerId, hostPlayerId = -1, mapId;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby_screen);
+
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         gameId = getIntent().getIntExtra("gameId", -1);
         playerId = getIntent().getIntExtra("playerId", -1);
@@ -181,3 +194,4 @@ public class LobbyScreen extends AppCompatActivity {
         });
     }
 }
+

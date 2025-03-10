@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operation-Nick Lobby</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0a3d62;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+        .lobby-container {
+            background: rgba(10, 1, 1, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+            width: 50%;
+        }
+        button {
+            background-color: #48ACE9;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #130E6A;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #1F78C1;
+        }
+        .map-container {
+            margin-top: 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 5px;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .next-page {
+            display: inline-block;
+            background-color: #48ACE9;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .next-page:hover {
+            background-color: #1F78C1;
+        }
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="lobby-container">
+    <h1>Welcome to Operation Nick</h1>
+    <p>Lobby ID: <span id="lobby-id">12345</span></p>
+    <p>Waiting for players...</p>
+    
+    <div class="map-container">
+        <h3>Choose Game</h3>
+        <select id="game-select">
+            <option value="">Loading Games...</option>
+        </select>
+    </div>
+
+    <button onclick="startGame()">Start Game</button>
+
+    <div class="button-container">
+        <a href="map.html" class="next-page">Next Page</a>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("http://trinity-developments.co.uk/games") 
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data); // For debugging
+
+      const select = document.getElementById("game-select");
+
+      // Clear existing options
+      select.innerHTML = `<option value="">Choose the Lobby</option>`;
+
+      data.games.forEach(game => {
+        const option = document.createElement("option");
+        option.value = game.gameId;
+        option.textContent = game.gameName;
+        select.appendChild(option);
+      });
+    })
+    .catch(error => {
+      console.error("Fetch error:", error);
+      document.getElementById("game-select").innerHTML = `<option value="">Failed to load games</option>`;
+    });
+});
+
+function startGame() {
+  alert("Game Started!");
+}
+</script>
+</body>
+</html>
