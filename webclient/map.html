@@ -44,7 +44,7 @@
             margin: 20px auto;
             padding: 10px 15px;
             background-color: #48ACE9;
-            color:#130E6A ;
+            color: #130E6A;
             text-align: center;
             text-decoration: none;
             border-radius: 4px;
@@ -61,13 +61,48 @@
         <h1>Operation Nick Game Map</h1>
         
         <div class="map-container">
-            <a href="leeds_map.png" target="_blank">
-                <img src="https://via.placeholder.com/600x400.png?text=Map+of+Leeds" alt="Map of Leeds" class="map-image">
-            </a>
+            <img id="map-image" src="https://via.placeholder.com/600x400.png?text=Map+of+Leeds" alt="Map of Leeds" class="map-image">
             <p>Click the image to view the full-sized map.</p>
         </div>
 
         <a href="settings.html" class="back-button">Back to Settings</a>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Fetch map data directly from the map server
+            fetch("http://trinity-developments.co.uk/images/Horsforth_Game_Map.png") // Adjust the endpoint if necessary
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.blob();
+                })
+                .then(data => {
+                    console.log(data); // For debugging
+
+                    const imageURL = URL.createObjectURL(data);
+
+                    // Assuming the response contains a URL for the map image
+                    const mapImageElement = document.getElementById("map-image");
+
+                    // Update the image source with the received map URL
+                    if (data) {
+                        mapImageElement.src = imageURL; // Update with the correct field from your response
+                    } else {
+                        mapImageElement.alt = "Map not found.";
+                    }
+                })
+                .catch(error => {
+                    console.error("Fetch error:", error);
+                    const mapImageElement = document.getElementById("map-image");
+                    mapImageElement.src = ""; // Clear the map image source
+                    mapImageElement.alt = "Failed to load map.";
+                });
+        });
+    </script>
 </body>
 </html>
+
+
+
