@@ -66,7 +66,15 @@ public class CreateLobbyScreen extends AppCompatActivity {
             public void onClick(View v) {
                 String gameName = gameNameInput.getText().toString();
                 boolean shortGame = gameLengthSwitch.isChecked();
-                int selectedMapId = mapSpinner.getSelectedItemPosition() + 1; // Spinner position to mapId
+
+                // Ensure valid selection
+                int selectedIndex = mapSpinner.getSelectedItemPosition();
+                if (selectedIndex < 0 || selectedIndex >= mapIds.size()) {
+                    Toast.makeText(CreateLobbyScreen.this, "Invalid map selection", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                int selectedMapId = mapIds.get(selectedIndex); // Get the correct Map ID
 
                 if (gameName.isEmpty()) {
                     Toast.makeText(CreateLobbyScreen.this, "Please enter a game name", Toast.LENGTH_SHORT).show();
@@ -103,11 +111,11 @@ public class CreateLobbyScreen extends AppCompatActivity {
                         for (int i = 0; i < maps.length(); i++) {
                             JSONObject map = maps.getJSONObject(i);
 
-                            if (map.has("mapName")) {
+                            if (map.has("mapName") && map.has("mapId")) {
                                 mapNames.add(map.getString("mapName"));
-                                mapIds.add(map.getInt("mapId"));
+                                mapIds.add(map.getInt("mapId")); // Store correct map ID
                             } else {
-                                Log.w(TAG, "Map JSON Missing 'mapName' key at index " + i);
+                                Log.w(TAG, "Map JSON Missing 'mapName' or 'mapId' at index " + i);
                             }
                         }
 
@@ -162,7 +170,6 @@ public class CreateLobbyScreen extends AppCompatActivity {
                         try {
                             JSONObject jsonResponse = new JSONObject(responseData);
                             int gameId = jsonResponse.getInt("gameId");
-                            String message = jsonResponse.getString("message");
 
                             joinHostPlayer(gameId);
 
@@ -181,7 +188,7 @@ public class CreateLobbyScreen extends AppCompatActivity {
     }
 
     public void joinHostPlayer(int gameId) {
-        Log.e(TAG, "trying to create host player");
+        Log.e(TAG, "Trying to create host player");
         String url = BASE_URL + "games/" + gameId + "/players";
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
 

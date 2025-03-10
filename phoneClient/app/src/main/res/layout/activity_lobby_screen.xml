@@ -23,7 +23,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Refresh Button -->
+    <TextView
+        android:id="@+id/waitingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Waiting for Host to Start the Game..."
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/refreshButton"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp" />
+
     <Button
         android:id="@+id/refreshButton"
         android:layout_width="wrap_content"
@@ -39,19 +49,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/playerNamesTextView" />
 
-    <!-- Waiting Text -->
-    <TextView
-        android:id="@+id/waitingTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Waiting for Host to Start the Game..."
-        android:textSize="18sp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/refreshButton"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="20dp" />
-
-    <!-- Start Game Button -->
     <Button
         android:id="@+id/startGameButton"
         android:layout_width="wrap_content"
@@ -62,7 +59,6 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="20dp" />
 
-    <!-- Loading Spinner -->
     <ProgressBar
         android:id="@+id/loadingSpinner"
         android:layout_width="wrap_content"
@@ -72,5 +68,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

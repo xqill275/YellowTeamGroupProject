@@ -2,7 +2,6 @@ package com.example.phoneclient;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -10,9 +9,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
-
-import androidx.activity.EdgeToEdge;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -41,18 +37,10 @@ public class LobbyScreen extends AppCompatActivity {
 
     int gameId, playerId, hostPlayerId = -1, mapId;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby_screen);
-
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         gameId = getIntent().getIntExtra("gameId", -1);
         playerId = getIntent().getIntExtra("playerId", -1);
@@ -70,7 +58,7 @@ public class LobbyScreen extends AppCompatActivity {
 
         refreshRunnable = () -> {
             fetchOpenGames(gameId);
-            handler.postDelayed(refreshRunnable, 10000); // Every 10 second
+            handler.postDelayed(refreshRunnable, 10000); // Refresh every 10 seconds
         };
         handler.post(refreshRunnable);
     }
@@ -107,8 +95,12 @@ public class LobbyScreen extends AppCompatActivity {
                             if (currentGameId == targetGameId) {
                                 mapId = game.getInt("mapId");
 
+                                Log.d(TAG, "Fetched Map ID: " + mapId); // ✅ Log mapId
+
                                 JSONArray players = game.getJSONArray("players");
                                 StringBuilder playerNames = new StringBuilder(); // Reset every time
+
+                                Log.d(TAG, "Fetched " + players.length() + " players");
 
                                 Log.d(TAG, "Fetched " + players.length() + " players");
 
@@ -131,7 +123,7 @@ public class LobbyScreen extends AppCompatActivity {
                                 runOnUiThread(() -> {
                                     playerNamesTextView.setText(playerNames.toString());
                                     playerNamesTextView.setAlpha(0f);
-                                    playerNamesTextView.animate().alpha(1f).setDuration(300); // Sexy lil fade-in 😏
+                                    playerNamesTextView.animate().alpha(1f).setDuration(300);
                                 });
 
                                 if (playerId == hostPlayerId) {
@@ -160,6 +152,8 @@ public class LobbyScreen extends AppCompatActivity {
             }
         });
     }
+
+
 
     public void startGame(int gameId, int playerId) {
         Request request = new Request.Builder()
@@ -194,4 +188,3 @@ public class LobbyScreen extends AppCompatActivity {
         });
     }
 }
-
