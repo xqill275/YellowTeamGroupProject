@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONArray;
@@ -93,10 +94,13 @@ public class LobbyScreen extends AppCompatActivity {
 
                             if (currentGameId == targetGameId) {
                                 mapId = game.getInt("mapId");
+
                                 Log.d(TAG, "Fetched Map ID: " + mapId); // ✅ Log mapId
 
                                 JSONArray players = game.getJSONArray("players");
-                                StringBuilder playerNames = new StringBuilder();
+                                StringBuilder playerNames = new StringBuilder(); // Reset every time
+
+                                Log.d(TAG, "Fetched " + players.length() + " players");
 
                                 Log.d(TAG, "Fetched " + players.length() + " players");
 
@@ -148,6 +152,8 @@ public class LobbyScreen extends AppCompatActivity {
             }
         });
     }
+
+
 
     public void startGame(int gameId, int playerId) {
         Request request = new Request.Builder()
