@@ -11,14 +11,23 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    int mapId;
+    int playerId;
+    int gameId;
+    int hostStartLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get mapId from Intent
-        int mapId = getIntent().getIntExtra("mapId", -1);
-        Log.d(TAG, "Received mapId: " + mapId);
+        // Get mapId, playerId, and gameId from Intent
+        mapId = getIntent().getIntExtra("mapId", -1);
+        playerId = getIntent().getIntExtra("playerId", -1);
+        gameId = getIntent().getIntExtra("gameId", -1);
+        hostStartLocation = getIntent().getIntExtra("HostStartLocation", -1);
+
+        Log.d(TAG, "host Start Location: " + hostStartLocation);
+        Log.d(TAG, "Received mapId: " + mapId + ", playerId: " + playerId + ", gameId: " + gameId);
 
         // Create root FrameLayout
         FrameLayout rootLayout = new FrameLayout(this);
@@ -45,11 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(scrollView);
 
-        // Initialize GameController
-        GameController gc = new GameController(this, rootLayout);
+        // Initialize GameController and pass gameId
+        GameController gc = new GameController(this, rootLayout, gameId, hostStartLocation);
 
         // Start the game with the received mapId
-        rootLayout.post(() -> gc.startGame(mapId));
-
+        rootLayout.post(() -> gc.startGame(mapId));  // Start game with mapId
     }
 }
