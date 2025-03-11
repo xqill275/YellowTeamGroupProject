@@ -36,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
                 FrameLayout.LayoutParams.WRAP_CONTENT // Allows content to grow
         ));
 
+        FrameLayout uiFrame = new FrameLayout(this);
+        uiFrame.setLayoutParams(new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+        ));
+
         // Wrap rootLayout inside a HorizontalScrollView to allow horizontal scrolling
         HorizontalScrollView horizontalScrollView = new HorizontalScrollView(this);
         horizontalScrollView.setLayoutParams(new HorizontalScrollView.LayoutParams(
@@ -55,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(scrollView);
 
         // Initialize GameController and pass gameId
-        GameController gc = new GameController(this, rootLayout, gameId, hostStartLocation);
+        GameController gc = new GameController(this, rootLayout, uiFrame, gameId, hostStartLocation, playerId);
 
         // Start the game with the received mapId
         rootLayout.post(() -> gc.startGame(mapId));  // Start game with mapId

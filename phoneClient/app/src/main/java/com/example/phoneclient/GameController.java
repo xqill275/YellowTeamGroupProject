@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Canvas;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.util.Log;
 import android.util.DisplayMetrics;
@@ -32,10 +33,12 @@ import okhttp3.Response;
 public class GameController {
     private Context context;
     private FrameLayout rootLayout; // Layout to hold the nodes
+    private FrameLayout uiLayer;
     private static final int NODE_SIZE = 200; // Size of each node view in pixels
     private List<Node> nodes; // List to hold NODE objects
     private static final String BASE_MAP_URL = "http://trinity-developments.co.uk/maps/";
     private static final String BASE_GAME_URL = "http://trinity-developments.co.uk/games/";
+    private static final String BASE_PLAYER_URL = "http://trinity-developments.co.uk/players/";
     private static final String TAG = "GameController";
     private OkHttpClient client = new OkHttpClient();
     private int gameID;
@@ -48,14 +51,17 @@ public class GameController {
     private int mapHeight;
 
     private int hostStartLocation;
+    private int playerId;
 
     // Constructor that accepts the context and root layout
-    public GameController(Context context, FrameLayout rootLayout, int gameID, int hostStartLocation) {
+    public GameController(Context context, FrameLayout rootLayout, FrameLayout uiLayer, int gameID, int hostStartLocation, int playerId) {
         this.context = context;
         this.rootLayout = rootLayout;
+        this.uiLayer = uiLayer;
         this.nodes = new ArrayList<>();
         this.gameID = gameID;
         this.hostStartLocation = hostStartLocation;
+        this.playerId = playerId;
         Log.d(TAG, "host Start Location: " + hostStartLocation);
         getScreenDimensions();
     }
@@ -71,6 +77,142 @@ public class GameController {
     public void startGame(int mapId) {
         getMapData(mapId);
         updatePlayerPositions(gameID, hostStartLocation);
+        fetchAndDisplayPlayerTickets(playerId);
+    }
+
+    private void fetchAndDisplayPlayerTickets(int playerId) {
+        String url = BASE_PLAYER_URL + playerId;
+        Request request = new Request.Builder().url(url).build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG, "Failed to fetch player details", e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    Log.e(TAG, "Unexpected response: " + response);
+                    return;
+                }
+
+                String responseData = response.body().string();
+                Log.d(TAG, "Player Details Response: " + responseData);
+
+                try {
+                    JSONObject playerObject = new JSONObject(responseData);
+                    int yellowTickets = playerObject.optInt("yellow", 0);
+                    int greenTickets = playerObject.optInt("green", 0);
+                    int redTickets = playerObject.optInt("red", 0);
+                    int blackTickets = playerObject.optInt("black", 0);
+                    int doubleTickets = playerObject.optInt("2x", 0);
+
+                    // Run UI updates on the main thread
+                    rootLayout.post(() -> {
+                        addShowTicketsButton(); // Ensure button is always above
+                        displayTicketButtons(yellowTickets, greenTickets, redTickets, blackTickets, doubleTickets);
+                    });
+
+                } catch (JSONException e) {
+                    Log.e(TAG, "Error parsing player details", e);
+                }
+            }
+        });
+    }
+
+    private void addShowTicketsButton() {
+        Button showTicketsButton = new Button(context);
+        showTicketsButton.setText("Show Tickets");
+
+        // Button styling
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+
+        params.topMargin = 50;  // Position at top
+        params.leftMargin = 50; // Left-aligned
+
+        showTicketsButton.setLayoutParams(params);
+
+        showTicketsButton.setOnClickListener(v -> {
+            // Toggle ticket visibility
+            for (int i = 0; i < rootLayout.getChildCount(); i++) {
+                View child = rootLayout.getChildAt(i);
+                if (child instanceof Button) {
+                    child.setVisibility(child.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                }
+            }
+        });
+
+        uiLayer.addView(showTicketsButton); // Add to UI Layer (always on top)
+    }
+
+    private void displayTicketButtons(int yellow, int green, int red, int black, int doubleX) {
+        rootLayout.removeAllViews(); // Clear existing buttons before adding new ones
+
+        Button toggleButton = new Button(context);
+        toggleButton.setText("Show Tickets");
+        toggleButton.setBackgroundColor(Color.LTGRAY);
+
+        FrameLayout.LayoutParams toggleParams = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        toggleParams.leftMargin = 20;
+        toggleParams.topMargin = 50;
+        toggleButton.setLayoutParams(toggleParams);
+        rootLayout.addView(toggleButton);
+
+        // Container for ticket buttons
+        FrameLayout ticketContainer = new FrameLayout(context);
+        FrameLayout.LayoutParams containerParams = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        containerParams.leftMargin = 20;
+        containerParams.topMargin = 150; // Place below the toggle button
+        ticketContainer.setLayoutParams(containerParams);
+        rootLayout.addView(ticketContainer);
+
+        List<Button> ticketButtons = new ArrayList<>();
+        int buttonSpacing = 150;
+        int buttonIndex = 0;
+
+        if (yellow > 0) ticketButtons.add(createTicketButton("Yellow", yellow, Color.YELLOW, buttonIndex++, buttonSpacing));
+        if (green > 0) ticketButtons.add(createTicketButton("Green", green, Color.GREEN, buttonIndex++, buttonSpacing));
+        if (red > 0) ticketButtons.add(createTicketButton("Red", red, Color.RED, buttonIndex++, buttonSpacing));
+        if (black > 0) ticketButtons.add(createTicketButton("Black", black, Color.BLACK, buttonIndex++, buttonSpacing));
+        if (doubleX > 0) ticketButtons.add(createTicketButton("2X", doubleX, Color.GRAY, buttonIndex++, buttonSpacing));
+
+        // Initially hide ticket buttons
+        for (Button button : ticketButtons) {
+            button.setVisibility(View.GONE);
+            ticketContainer.addView(button);
+        }
+
+        toggleButton.setOnClickListener(v -> {
+            boolean isVisible = ticketButtons.get(0).getVisibility() == View.VISIBLE;
+            for (Button button : ticketButtons) {
+                button.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+            }
+        });
+    }
+
+    private Button createTicketButton(String label, int count, int color, int index, int spacing) {
+        Button button = new Button(context);
+        button.setText(label + ": " + count);
+        button.setBackgroundColor(color);
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        params.topMargin = index * spacing;
+        button.setLayoutParams(params);
+
+        return button;
     }
 
     private void updatePlayerPositions(int gameId, int hostStartLocation) {
@@ -171,7 +313,10 @@ public class GameController {
                 }
 
                 String responseData = response.body().string();
-                Log.d(TAG, "Response: " + responseData);
+                Log.d(TAG, "Map Data Response: " + responseData);
+                if (responseData.isEmpty()) {
+                    Log.e(TAG, "Empty map data received!");
+                }
                 parseMapData(responseData);
             }
         });
@@ -216,9 +361,10 @@ public class GameController {
                 Node node = createNode(nodeNum, scaledX, scaledY);
                 nodes.add(node);
 
+
                 NodeView nodeView = createNodeView(node, colour);
                 positionNodeView(nodeView, scaledX, scaledY);
-
+                Log.d(TAG, "Total Nodes Parsed: " + nodes.size());
                 rootLayout.post(() -> rootLayout.addView(nodeView));
             }
 
