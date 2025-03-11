@@ -215,12 +215,16 @@ public class CreateLobbyScreen extends AppCompatActivity {
                         try {
                             JSONObject jsonResponse = new JSONObject(response.body().string());
                             int playerId = jsonResponse.getInt("playerId");
-                            Log.e(TAG, "playerID: "+playerId);
+                            String role = jsonResponse.getString("role");
+                            int startLocation = jsonResponse.getInt("startLocation");
+
+                            Log.e(TAG, "playerID: " + playerId + ", Role: " + role + ", Start Location: " + startLocation);
 
                             runOnUiThread(() -> {
                                 Intent intent = new Intent(CreateLobbyScreen.this, LobbyScreen.class);
                                 intent.putExtra("gameId", gameId);
                                 intent.putExtra("playerId", playerId);
+                                intent.putExtra("startLocation", startLocation); // Pass start location
                                 startActivity(intent);
                                 finish();
                             });

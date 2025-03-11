@@ -35,8 +35,11 @@ public class GameController {
     private static final int NODE_SIZE = 200; // Size of each node view in pixels
     private List<Node> nodes; // List to hold NODE objects
     private static final String BASE_MAP_URL = "http://trinity-developments.co.uk/maps/";
+    private static final String BASE_GAME_URL = "http://trinity-developments.co.uk/games/";
     private static final String TAG = "GameController";
     private OkHttpClient client = new OkHttpClient();
+    private int gameID;
+    private HashMap<Integer, View> playerMarkers = new HashMap<>();
 
     private int screenWidth;
     private int screenHeight;
@@ -44,11 +47,16 @@ public class GameController {
     private int mapWidth;
     private int mapHeight;
 
+    private int hostStartLocation;
+
     // Constructor that accepts the context and root layout
-    public GameController(Context context, FrameLayout rootLayout) {
+    public GameController(Context context, FrameLayout rootLayout, int gameID, int hostStartLocation) {
         this.context = context;
         this.rootLayout = rootLayout;
         this.nodes = new ArrayList<>();
+        this.gameID = gameID;
+        this.hostStartLocation = hostStartLocation;
+        Log.d(TAG, "host Start Location: " + hostStartLocation);
         getScreenDimensions();
     }
 
@@ -62,7 +70,86 @@ public class GameController {
 
     public void startGame(int mapId) {
         getMapData(mapId);
+        updatePlayerPositions(gameID, hostStartLocation);
     }
+
+    private void updatePlayerPositions(int gameId, int hostStartLocation) {
+        String url = BASE_GAME_URL + gameId;
+        Request request = new Request.Builder().url(url).build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG, "Failed to fetch game state", e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    Log.e(TAG, "Unexpected response: " + response);
+                    return;
+                }
+
+                String responseData = response.body().string();
+                Log.d(TAG, "Game State Response: " + responseData);
+
+                try {
+                    JSONObject gameObject = new JSONObject(responseData);
+                    JSONArray playersArray = gameObject.getJSONArray("players");
+
+                    for (int i = 0; i < playersArray.length(); i++) {
+                        JSONObject playerObject = playersArray.getJSONObject(i);
+                        int playerId = playerObject.getInt("playerId");
+                        String colorName = playerObject.getString("colour");
+                        String location = playerObject.getString("location");
+
+                        int locationId;
+                        if (location.equals("Hidden")) {
+                            if (hostStartLocation == -1) {
+                                continue; // Skip if hostStartLocation is not available
+                            }
+                            locationId = hostStartLocation; // Show host's start location
+                        } else {
+                            locationId = Integer.parseInt(location);
+                        }
+
+                        Node node = getNodeById(locationId);
+                        if (node == null) continue;
+
+                        int color = getColourFromName(colorName);
+                        int x = node.getX() + 50;
+                        int y = node.getY() + 50;
+
+                        rootLayout.post(() -> addOrUpdatePlayerMarker(playerId, x, y, color));
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "Error parsing player positions", e);
+                }
+            }
+        });
+
+        rootLayout.postDelayed(() -> updatePlayerPositions(gameID, hostStartLocation), 2000);
+    }
+
+    private void addOrUpdatePlayerMarker(int playerId, int x, int y, int color) {
+        View marker = playerMarkers.get(playerId);
+        if (marker == null) {
+            marker = new View(context);
+            marker.setBackgroundColor(color);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(50, 50);
+            params.leftMargin = x;
+            params.topMargin = y;
+            marker.setLayoutParams(params);
+            playerMarkers.put(playerId, marker);
+            rootLayout.addView(marker);
+        } else {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) marker.getLayoutParams();
+            params.leftMargin = x;
+            params.topMargin = y;
+            marker.setLayoutParams(params);
+        }
+    }
+
 
     private void getMapData(int mapId) {
         String url = BASE_MAP_URL + mapId;
@@ -177,6 +264,7 @@ public class GameController {
             case "blue": return Color.BLUE;
             case "green": return Color.GREEN;
             case "yellow": return Color.YELLOW;
+            case "clear": return Color.WHITE;
 
             default: return Color.BLACK;
         }

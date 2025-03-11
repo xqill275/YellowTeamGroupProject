@@ -35,6 +35,7 @@ public class LobbyScreen extends AppCompatActivity {
     Runnable refreshRunnable;
 
     int gameId, playerId, hostPlayerId = -1, mapId;
+    int hostStartLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,8 @@ public class LobbyScreen extends AppCompatActivity {
 
         gameId = getIntent().getIntExtra("gameId", -1);
         playerId = getIntent().getIntExtra("playerId", -1);
+        hostStartLocation = getIntent().getIntExtra("startLocation", -1);
+        Log.d(TAG, "host Start Location: " + hostStartLocation);
 
         playerNamesTextView = findViewById(R.id.playerNamesTextView);
         waitingTextView = findViewById(R.id.waitingTextView);
@@ -151,6 +154,7 @@ public class LobbyScreen extends AppCompatActivity {
                                 intent.putExtra("gameId", gameId);
                                 intent.putExtra("mapId", mapId);
                                 intent.putExtra("playerId", playerId);
+                                intent.putExtra("HostStartLocation", hostStartLocation);
                                 startActivity(intent);
                                 finish();
                             });
@@ -189,6 +193,7 @@ public class LobbyScreen extends AppCompatActivity {
                         intent.putExtra("gameId", gameId);
                         intent.putExtra("mapId", mapId);
                         intent.putExtra("playerId", playerId);
+                        intent.putExtra("HostStartLocation", hostStartLocation);
                         startActivity(intent);
                         finish();
                     });
