@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Canvas;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -133,14 +134,13 @@ public class GameController {
         Button showTicketsButton = new Button(context);
         showTicketsButton.setText("Show Tickets");
 
-        // Button styling
+        // Button styling - Position at the bottom center
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-
-        params.topMargin = 50;  // Position at top
-        params.leftMargin = 50; // Left-aligned
+        params.bottomMargin = 50; // Position at the bottom
+        params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
 
         showTicketsButton.setLayoutParams(params);
 
@@ -148,7 +148,7 @@ public class GameController {
             // Toggle ticket visibility
             for (int i = 0; i < rootLayout.getChildCount(); i++) {
                 View child = rootLayout.getChildAt(i);
-                if (child instanceof Button) {
+                if (child instanceof Button && child != showTicketsButton) {
                     child.setVisibility(child.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
                 }
             }
@@ -157,9 +157,9 @@ public class GameController {
         uiLayer.addView(showTicketsButton); // Add to UI Layer (always on top)
     }
 
-    private void displayTicketButtons(int yellow, int green, int red, int black, int doubleX) {
-        //rootLayout.removeAllViews(); // Clear existing buttons before adding new ones
 
+    private void displayTicketButtons(int yellow, int green, int red, int black, int doubleX) {
+        // "Show Tickets" button at the bottom
         Button toggleButton = new Button(context);
         toggleButton.setText("Show Tickets");
         toggleButton.setBackgroundColor(Color.LTGRAY);
@@ -168,8 +168,8 @@ public class GameController {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        toggleParams.leftMargin = 20;
-        toggleParams.topMargin = 50;
+        toggleParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+        toggleParams.bottomMargin = 50;
         toggleButton.setLayoutParams(toggleParams);
         rootLayout.addView(toggleButton);
 
@@ -179,13 +179,13 @@ public class GameController {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        containerParams.leftMargin = 20;
-        containerParams.topMargin = 150; // Place below the toggle button
+        containerParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+        containerParams.bottomMargin = 150; // Initially above the toggle button
         ticketContainer.setLayoutParams(containerParams);
         rootLayout.addView(ticketContainer);
 
         List<Button> ticketButtons = new ArrayList<>();
-        int buttonSpacing = 150;
+        int buttonSpacing = 150; // Space between buttons
         int buttonIndex = 0;
 
         if (yellow > 0) ticketButtons.add(createTicketButton("Yellow", yellow, Color.YELLOW, buttonIndex++, buttonSpacing));
@@ -200,6 +200,7 @@ public class GameController {
             ticketContainer.addView(button);
         }
 
+        // Show/Hide ticket buttons when clicking "Show Tickets"
         toggleButton.setOnClickListener(v -> {
             boolean isVisible = ticketButtons.get(0).getVisibility() == View.VISIBLE;
             for (Button button : ticketButtons) {
@@ -207,6 +208,7 @@ public class GameController {
             }
         });
     }
+
 
     private Button createTicketButton(String label, int count, int color, int index, int spacing) {
         Button button = new Button(context);
@@ -217,13 +219,17 @@ public class GameController {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        params.topMargin = index * spacing;
+        params.bottomMargin = (index + 1) * spacing; // Position above "Show Tickets"
+        params.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+
         button.setLayoutParams(params);
 
         button.setOnClickListener(v -> selectTicket(label));
 
         return button;
     }
+
+
 
     private void selectTicket(String ticket) {
         selectedTicket = ticket.toLowerCase();
@@ -379,11 +385,13 @@ public class GameController {
                 //Log.d(TAG, "Adding node at: X=" + scaledX + " Y=" + scaledY);
                 Node node = createNode(nodeNum, xPos, yPos);
                 nodes.add(node);
+                Log.d(TAG, "Node number" + node.getNodeNum() + " + Location: " + node.getX() + ", " + node.getY());
 
 
                 NodeView nodeView = createNodeView(node, colour);
                 positionNodeView(nodeView, xPos, yPos);
                 Log.d(TAG, "Total Nodes Parsed: " + nodes.size());
+
                 rootLayout.post(() -> rootLayout.addView(nodeView));
             }
 

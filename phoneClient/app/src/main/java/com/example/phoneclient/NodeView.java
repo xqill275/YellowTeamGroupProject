@@ -38,12 +38,14 @@ public class NodeView extends View {
         circlePaint = new Paint();
         circlePaint.setColor(0xFF2196F3); // Default blue colour
         circlePaint.setStyle(Paint.Style.FILL); // Fill the circle
+        circlePaint.setAlpha(85); // Opacity
     }
 
     // Sets the node data (node number and colour) and requests a redraw
     public void setNodeData(int nodeNum, int colour) {
         this.nodeNum = nodeNum; // Assign the node number
         circlePaint.setColor(colour); // Update the circle's colour
+        circlePaint.setAlpha(85); // Opacity
         invalidate(); // Request the view to be redrawn
     }
 
@@ -58,13 +60,13 @@ public class NodeView extends View {
         float centreY = getHeight() / 2f; // Centre Y-coordinate
 
         // Draw the circle
-        canvas.drawCircle(centreX, centreY, radius, circlePaint);
+        canvas.drawCircle(centreX - 20, centreY - 20, radius, circlePaint);
 
         // Draw the node number as text in the centre of the circle
         Paint textPaint = new Paint();
         textPaint.setColor(0xFFFFFFFF); // White colour for the text
         textPaint.setTextSize(50); // Font size
         textPaint.setTextAlign(Paint.Align.CENTER); // Align text to the centre
-        canvas.drawText(String.valueOf(nodeNum), centreX, centreY + 15, textPaint); // Draw the number
+        canvas.drawText(String.valueOf(nodeNum), centreX - 20, centreY - 5, textPaint); // Draw the number
     }
 }
