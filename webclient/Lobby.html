@@ -7,16 +7,26 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #0a3d62;
+            background-color: black;
             color: white;
             text-align: center;
             padding: 50px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .logo-container {
+            margin-bottom: 20px;
+        }
+        .logo {
+            max-width: 200px;
+            height: auto;
         }
         .lobby-container {
-            background: rgba(10, 1, 1, 0.7);
+            background: rgba(255, 255, 255, 0.1);
             padding: 30px;
             border-radius: 10px;
-            display: inline-block;
             width: 50%;
         }
         button {
@@ -34,7 +44,6 @@
         }
         .map-container {
             margin-top: 20px;
-            text-align: center;
             background: rgba(255, 255, 255, 0.2);
             padding: 15px;
             border-radius: 5px;
@@ -44,12 +53,13 @@
             font-size: 16px;
             margin-top: 10px;
         }
+        /* Next Page Button */
         .next-page {
             display: inline-block;
             background-color: #48ACE9;
-            color: white;
+            color: #130E6A;
             padding: 10px 20px;
-            margin: 10px;
+            margin-top: 20px;
             cursor: pointer;
             font-size: 18px;
             border-radius: 5px;
@@ -58,66 +68,64 @@
         .next-page:hover {
             background-color: #1F78C1;
         }
-        .button-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
-<div class="lobby-container">
-    <h1>Welcome to Operation Nick</h1>
-    <p>Lobby ID: <span id="lobby-id">12345</span></p>
-    <p>Waiting for players...</p>
-    
-    <div class="map-container">
-        <h3>Choose Game</h3>
-        <select id="game-select">
-            <option value="">Loading Games...</option>
-        </select>
+    <div class="logo-container">
+        <img class="logo" src="logo.png" alt="Game Logo">
     </div>
+    <div class="lobby-container">
+        <h1>Welcome to Operation Nick</h1>
+        <p>Lobby ID: <span id="lobby-id">12345</span></p>
+        <p>Waiting for players...</p>
+        
+        <div class="map-container">
+            <h3>Choose Game</h3>
+            <select id="game-select">
+                <option value="">Loading Games...</option>
+            </select>
+        </div>
+        
+        <button onclick="startGame()">Start Game</button>
 
-    <button onclick="startGame()">Start Game</button>
-
-    <div class="button-container">
+        <!-- Next Page Button -->
         <a href="map.html" class="next-page">Next Page</a>
     </div>
-</div>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  fetch("http://trinity-developments.co.uk/games") 
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log(data); // For debugging
-
-      const select = document.getElementById("game-select");
-
-      // Clear existing options
-      select.innerHTML = `<option value="">Choose the Lobby</option>`;
-
-      data.games.forEach(game => {
-        const option = document.createElement("option");
-        option.value = game.gameId;
-        option.textContent = game.gameName;
-        select.appendChild(option);
-      });
-    })
-    .catch(error => {
-      console.error("Fetch error:", error);
-      document.getElementById("game-select").innerHTML = `<option value="">Failed to load games</option>`;
-    });
-});
-
-function startGame() {
-  alert("Game Started!");
-}
-</script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          fetch("http://trinity-developments.co.uk/games") // Updated server endpoint
+            .then(response => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then(data => {
+              console.log(data); // For debugging
+        
+              const select = document.getElementById("game-select");
+        
+              // Clear existing options
+              select.innerHTML = `<option value="">Choose the Lobby</option>`;
+        
+              data.games.forEach(game => {
+                const option = document.createElement("option");
+                option.value = game.gameId;
+                option.textContent = game.gameName;
+                select.appendChild(option);
+              });
+            })
+            .catch(error => {
+              console.error("Fetch error:", error);
+              document.getElementById("game-select").innerHTML = `<option value="">Failed to load games</option>`;
+            });
+        });
+        
+        function startGame() {
+          alert("Game Started!");
+        }
+    </script>
 </body>
 </html>
+
