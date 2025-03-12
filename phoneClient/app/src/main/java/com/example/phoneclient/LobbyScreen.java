@@ -194,6 +194,7 @@ public class LobbyScreen extends AppCompatActivity {
                         intent.putExtra("mapId", mapId);
                         intent.putExtra("playerId", playerId);
                         intent.putExtra("HostStartLocation", hostStartLocation);
+                        intent.putExtra("HostID", hostPlayerId);
                         startActivity(intent);
                         finish();
                     });

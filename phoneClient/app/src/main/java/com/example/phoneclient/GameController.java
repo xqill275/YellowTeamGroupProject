@@ -25,8 +25,10 @@ import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 // The GameController manages the creation and display of nodes
@@ -52,9 +54,13 @@ public class GameController {
 
     private int hostStartLocation;
     private int playerId;
+    private int hostID;
+
+
+    private String selectedTicket = null;
 
     // Constructor that accepts the context and root layout
-    public GameController(Context context, FrameLayout rootLayout, FrameLayout uiLayer, int gameID, int hostStartLocation, int playerId) {
+    public GameController(Context context, FrameLayout rootLayout, FrameLayout uiLayer, int gameID, int hostStartLocation, int playerId, int hostID) {
         this.context = context;
         this.rootLayout = rootLayout;
         this.uiLayer = uiLayer;
@@ -62,6 +68,7 @@ public class GameController {
         this.gameID = gameID;
         this.hostStartLocation = hostStartLocation;
         this.playerId = playerId;
+        this.hostID = hostID;
         Log.d(TAG, "host Start Location: " + hostStartLocation);
         getScreenDimensions();
     }
@@ -75,9 +82,10 @@ public class GameController {
     }
 
     public void startGame(int mapId) {
-        getMapData(mapId);
-        updatePlayerPositions(gameID, hostStartLocation);
-        fetchAndDisplayPlayerTickets(playerId);
+        getMapData(mapId, () -> {
+            updatePlayerPositions(gameID);
+            fetchAndDisplayPlayerTickets(playerId);
+        });
     }
 
     private void fetchAndDisplayPlayerTickets(int playerId) {
@@ -150,7 +158,7 @@ public class GameController {
     }
 
     private void displayTicketButtons(int yellow, int green, int red, int black, int doubleX) {
-        rootLayout.removeAllViews(); // Clear existing buttons before adding new ones
+        //rootLayout.removeAllViews(); // Clear existing buttons before adding new ones
 
         Button toggleButton = new Button(context);
         toggleButton.setText("Show Tickets");
@@ -212,10 +220,17 @@ public class GameController {
         params.topMargin = index * spacing;
         button.setLayoutParams(params);
 
+        button.setOnClickListener(v -> selectTicket(label));
+
         return button;
     }
 
-    private void updatePlayerPositions(int gameId, int hostStartLocation) {
+    private void selectTicket(String ticket) {
+        selectedTicket = ticket.toLowerCase();
+        Log.d(TAG, "Selected ticket: " + selectedTicket);
+    }
+
+    private void updatePlayerPositions(int gameId) {
         String url = BASE_GAME_URL + gameId;
         Request request = new Request.Builder().url(url).build();
 
@@ -270,7 +285,7 @@ public class GameController {
             }
         });
 
-        rootLayout.postDelayed(() -> updatePlayerPositions(gameID, hostStartLocation), 2000);
+        rootLayout.postDelayed(() -> updatePlayerPositions(gameID), 2000);
     }
 
     private void addOrUpdatePlayerMarker(int playerId, int x, int y, int color) {
@@ -293,7 +308,7 @@ public class GameController {
     }
 
 
-    private void getMapData(int mapId) {
+    private void getMapData(int mapId, Runnable onComplete) {
         String url = BASE_MAP_URL + mapId;
         Request request = new Request.Builder()
                 .url(url)
@@ -318,9 +333,13 @@ public class GameController {
                     Log.e(TAG, "Empty map data received!");
                 }
                 parseMapData(responseData);
+
+                // Ensure UI updates are done on the main thread
+                rootLayout.post(onComplete);
             }
         });
     }
+
 
     private void parseMapData(String jsonData) {
         try {
@@ -357,7 +376,7 @@ public class GameController {
 
                 String colourName = nodeColours.getOrDefault(nodeNum, "Grey");
                 int colour = getColourFromName(colourName);
-
+                Log.d(TAG, "Adding node at: X=" + scaledX + " Y=" + scaledY);
                 Node node = createNode(nodeNum, scaledX, scaledY);
                 nodes.add(node);
 
@@ -436,10 +455,71 @@ public class GameController {
 
     private NodeView createNodeView(Node node, int colour) {
         NodeView nodeView = new NodeView(context);
-        int circleColour = generateRandomColor();
         nodeView.setNodeData(node.getNodeNum(), colour);
+
+        nodeView.setOnClickListener(v -> {
+            if (selectedTicket != null) {
+               int destination = node.getNodeNum();
+                Log.d(TAG, "trying to make move: destination: "+destination+ " ticket: "+selectedTicket);
+               makeMove(playerId, destination, selectedTicket);
+            } else {
+                Log.d(TAG, "No ticket selected!");
+            }
+        });
+
         return nodeView;
     }
+
+    private void makeMove(int playerId, int destination, String ticketType) {
+        Log.d(TAG, "Attempting to move");
+        OkHttpClient client = new OkHttpClient();
+
+        // Replace with your actual server endpoint
+        String url = "http://trinity-developments.co.uk/players/" + playerId + "/moves";
+
+        // Create JSON payload
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("gameID", gameID);
+            jsonObject.put("ticket", ticketType);
+            jsonObject.put("destination", destination);
+        } catch (JSONException e) {
+            Log.e(TAG, "JSON Exception: " + e.getMessage());
+            return;
+        }
+
+        RequestBody body = RequestBody.create(jsonObject.toString(), MediaType.get("application/json; charset=utf-8"));
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        Log.d(TAG, "move request: "+body);
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG, "Network request failed: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseBody = response.body().string();
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "Before updating, hostStartLocation: " + hostStartLocation);
+                    if (hostID > 0){
+                        hostStartLocation = destination;
+                    }
+                    Log.d(TAG, "After updating, hostStartLocation: " + hostStartLocation);
+                } else {
+                    Log.e(TAG, "Move failed. Code: " + response.code() + " Response: " + responseBody);
+                }
+            }
+        });
+    }
+
+
 
     private void positionNodeView(NodeView nodeView, int xPos, int yPos) {
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(NODE_SIZE, NODE_SIZE);
