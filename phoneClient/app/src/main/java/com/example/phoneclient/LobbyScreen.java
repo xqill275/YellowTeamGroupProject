@@ -63,6 +63,11 @@ public class LobbyScreen extends AppCompatActivity {
             handler.postDelayed(refreshRunnable, 10000); // Refresh every 10 seconds
         };
         handler.post(refreshRunnable);
+
+        Button backButton = findViewById(R.id.backButton4);
+        backButton.setOnClickListener(v -> {
+            finish(); // Close the current activity and return to the previous one
+        });
     }
 
     @Override

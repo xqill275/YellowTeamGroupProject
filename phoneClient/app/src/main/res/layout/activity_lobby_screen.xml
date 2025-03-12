@@ -36,10 +36,10 @@
 
     <Button
         android:id="@+id/refreshButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="118dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="408dp"
         android:width="200dp"
         android:height="70dp"
         android:backgroundTint="#FFFFFF"
@@ -47,7 +47,9 @@
         android:text="Refresh"
         android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/playerNamesTextView" />
+        app:layout_constraintTop_toBottomOf="@id/playerNamesTextView"
+        app:strokeColor="#4169E1"
+        app:strokeWidth="5dp" />
 
     <Button
         android:id="@+id/startGameButton"
@@ -68,6 +70,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/backButton4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FBFBFB"
+        android:fontFamily="@font/aclonica"
+        android:text="Back"
+        android:textColor="#040202"
+        app:strokeColor="#4169E1"
+        app:strokeWidth="5dp"
+        tools:layout_editor_absoluteX="19dp"
+        tools:layout_editor_absoluteY="19dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

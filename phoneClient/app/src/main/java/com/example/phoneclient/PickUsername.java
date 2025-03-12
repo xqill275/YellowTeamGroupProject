@@ -38,6 +38,7 @@ public class PickUsername extends AppCompatActivity {
 
         usernameInput = findViewById(R.id.editTextText2);
         joinButton = findViewById(R.id.button3);
+        Button backButton2 = findViewById(R.id.backButton2);
 
         int gameId = getIntent().getIntExtra("gameId", -1);
 
@@ -48,6 +49,13 @@ public class PickUsername extends AppCompatActivity {
                 if (!playerName.isEmpty() && gameId != -1) {
                     joinGame(gameId, playerName);
                 }
+            }
+        });
+
+        backButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // This will return to the previous activity
             }
         });
     }

@@ -61,6 +61,14 @@ public class CreateLobbyScreen extends AppCompatActivity {
 
         fetchMaps();
 
+        Button backButton = findViewById(R.id.backButton3);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Closes this activity and returns to the previous one
+            }
+        });
+
         createGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
