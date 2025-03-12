@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.util.Log;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,6 +58,9 @@ public class GameController {
     private int playerId;
     private int hostID;
 
+    private TextView gameStatusTextView;
+
+
 
     private String selectedTicket = null;
 
@@ -86,6 +90,8 @@ public class GameController {
         getMapData(mapId, () -> {
             updatePlayerPositions(gameID);
             fetchAndDisplayPlayerTickets(playerId);
+            initGameStatusDisplay();
+            fetchGameState(gameID); // Start polling the game state
         });
     }
 
@@ -569,4 +575,73 @@ public class GameController {
             canvas.drawLine(startX, startY, endX, endY, paint);
         }
     }
+
+    private void fetchGameState(int gameId) {
+        String url = BASE_GAME_URL + gameId;
+        Request request = new Request.Builder().url(url).build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG, "Failed to fetch game state", e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    Log.e(TAG, "Unexpected response: " + response);
+                    return;
+                }
+
+                String responseData = response.body().string();
+                Log.d(TAG, "Game State Response: " + responseData);
+
+                try {
+                    JSONObject gameObject = new JSONObject(responseData);
+                    int round = gameObject.getInt("round");
+                    String state = gameObject.getString("state");
+
+                    // Determine whose turn it is
+                    String turnText = state.equals("Detective") ? "Detectives' Turn" : "Fugitive's Turn";
+
+                    // Update UI on the main thread
+                    rootLayout.post(() -> updateGameStatus(round, turnText));
+
+                } catch (JSONException e) {
+                    Log.e(TAG, "Error parsing game state", e);
+                }
+            }
+        });
+
+        // Schedule next update in 2 seconds
+        rootLayout.postDelayed(() -> fetchGameState(gameID), 1000);
+    }
+
+    private void initGameStatusDisplay() {
+        gameStatusTextView = new TextView(context);
+        gameStatusTextView.setTextSize(18);
+        gameStatusTextView.setTextColor(Color.WHITE);
+        gameStatusTextView.setBackgroundColor(Color.BLACK);
+        gameStatusTextView.setPadding(20, 10, 20, 10);
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+        params.topMargin = 50;
+
+        gameStatusTextView.setLayoutParams(params);
+        uiLayer.addView(gameStatusTextView);
+    }
+
+    private void updateGameStatus(int round, String turnText) {
+        if (gameStatusTextView != null) {
+            gameStatusTextView.setText("Round: " + round + " | " + turnText);
+        }
+    }
+
 }
+
+
+
