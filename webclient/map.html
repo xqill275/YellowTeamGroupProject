@@ -5,50 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scotland Yard Game Map</title>
     <style>
-        /* CSS Styles */
+        /* General Styles */
         body {
             font-family: Arial, sans-serif;
-            background-color: #0a3d62;
+            background-color: black;
+            color: white;
+            text-align: center;
             margin: 0;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .container {
+        /* Logo Styling */
+        .logo-container {
+            margin-bottom: 20px;
+        }
+        .logo {
+            max-width: 200px;
+            height: auto;
+        }
+
+        /* Main Content Styling */
+        .map-container {
             max-width: 800px;
-            margin: auto;
-            background: white;
+            background: rgba(255, 255, 255, 0.1);
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
         }
 
         h1 {
-            text-align: center;
-            color: #343a40;
-        }
-
-        .map-container {
-            text-align: center;
-            margin-top: 20px;
+            margin-bottom: 20px;
         }
 
         .map-image {
             width: 100%;
             height: auto;
             border-radius: 4px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
         }
 
+        /* Back Button */
         .back-button {
-            display: block;
-            margin: 20px auto;
+            display: inline-block;
+            margin-top: 20px;
             padding: 10px 15px;
             background-color: #48ACE9;
             color: #130E6A;
             text-align: center;
             text-decoration: none;
-            border-radius: 4px;
-            width: 150px;
+            border-radius: 5px;
+            font-size: 18px;
         }
 
         .back-button:hover {
@@ -57,21 +66,24 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Operation Nick Game Map</h1>
-        
-        <div class="map-container">
-            <img id="map-image" src="https://via.placeholder.com/600x400.png?text=Map+of+Leeds" alt="Map of Leeds" class="map-image">
-            <p>Click the image to view the full-sized map.</p>
-        </div>
-
-        <a href="settings.html" class="back-button">Back to Settings</a>
+    <!-- Logo at the top -->
+    <div class="logo-container">
+        <img class="logo" src="logo.png" alt="Game Logo">
     </div>
+
+    <!-- Map Section -->
+    <div class="map-container">
+        <h1>Operation Nick Game Map</h1>
+        <img id="map-image" src="" alt="Loading map..." class="map-image">
+    </div>
+
+    <!-- Back Button -->
+    <a href="settings.html" class="back-button">Back to Settings</a>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Fetch map data directly from the map server
-            fetch("http://trinity-developments.co.uk/images/Horsforth_Game_Map.png") // Adjust the endpoint if necessary
+            // Fetch map data from the remote server
+            fetch("http://trinity-developments.co.uk/images/Horsforth_Game_Map.png")
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Network response was not ok");
@@ -79,24 +91,19 @@
                     return response.blob();
                 })
                 .then(data => {
-                    console.log(data); // For debugging
+                    console.log("Map fetched successfully", data);
 
+                    // Convert blob data to a valid URL
                     const imageURL = URL.createObjectURL(data);
 
-                    // Assuming the response contains a URL for the map image
+                    // Update the image element with the fetched map
                     const mapImageElement = document.getElementById("map-image");
-
-                    // Update the image source with the received map URL
-                    if (data) {
-                        mapImageElement.src = imageURL; // Update with the correct field from your response
-                    } else {
-                        mapImageElement.alt = "Map not found.";
-                    }
+                    mapImageElement.src = imageURL;
                 })
                 .catch(error => {
-                    console.error("Fetch error:", error);
+                    console.error("Error fetching the map:", error);
                     const mapImageElement = document.getElementById("map-image");
-                    mapImageElement.src = ""; // Clear the map image source
+                    mapImageElement.src = ""; // Remove any invalid source
                     mapImageElement.alt = "Failed to load map.";
                 });
         });
