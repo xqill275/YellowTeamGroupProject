@@ -36,7 +36,7 @@ public class GameController {
     private Context context;
     private FrameLayout rootLayout; // Layout to hold the nodes
     private FrameLayout uiLayer;
-    private static final int NODE_SIZE = 200; // Size of each node view in pixels
+    private static final int NODE_SIZE = 100; // Size of each node view in pixels
     private List<Node> nodes; // List to hold NODE objects
     private static final String BASE_MAP_URL = "http://trinity-developments.co.uk/maps/";
     private static final String BASE_GAME_URL = "http://trinity-developments.co.uk/games/";
@@ -371,24 +371,24 @@ public class GameController {
 
 
                 // Scale the positions
-                int scaledX = (int) ((xPos / (float) mapWidth) * screenWidth);
-                int scaledY = (int) ((yPos / (float) mapHeight) * screenHeight);
+                //int scaledX = (int) ((xPos / (float) mapWidth) * screenWidth);
+                //int scaledY = (int) ((yPos / (float) mapHeight) * screenHeight);
 
                 String colourName = nodeColours.getOrDefault(nodeNum, "Grey");
                 int colour = getColourFromName(colourName);
-                Log.d(TAG, "Adding node at: X=" + scaledX + " Y=" + scaledY);
-                Node node = createNode(nodeNum, scaledX, scaledY);
+                //Log.d(TAG, "Adding node at: X=" + scaledX + " Y=" + scaledY);
+                Node node = createNode(nodeNum, xPos, yPos);
                 nodes.add(node);
 
 
                 NodeView nodeView = createNodeView(node, colour);
-                positionNodeView(nodeView, scaledX, scaledY);
+                positionNodeView(nodeView, xPos, yPos);
                 Log.d(TAG, "Total Nodes Parsed: " + nodes.size());
                 rootLayout.post(() -> rootLayout.addView(nodeView));
             }
 
             // Parse connections and draw them
-            drawConnections(connectionsArray);
+            //drawConnections(connectionsArray);
 
         } catch (JSONException e) {
             Log.e(TAG, "Error parsing JSON", e);
