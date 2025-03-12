@@ -36,6 +36,7 @@ public class JoinGame extends AppCompatActivity {
 
         gameSpinner = findViewById(R.id.spinner2);
         joinButton = findViewById(R.id.button2);
+        Button backButton = findViewById(R.id.backButton); // 🔹 Add Back Button
 
         fetchGames();
 
@@ -49,6 +50,14 @@ public class JoinGame extends AppCompatActivity {
                     intent.putExtra("gameId", gameId);
                     startActivity(intent);
                 }
+            }
+        });
+
+        // 🔹 Back Button Logic
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Closes this activity and goes back to the previous screen
             }
         });
     }
