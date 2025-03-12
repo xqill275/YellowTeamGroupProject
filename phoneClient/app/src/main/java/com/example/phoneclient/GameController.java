@@ -171,7 +171,7 @@ public class GameController {
         toggleParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         toggleParams.bottomMargin = 50;
         toggleButton.setLayoutParams(toggleParams);
-        rootLayout.addView(toggleButton);
+        uiLayer.addView(toggleButton);
 
         // Container for ticket buttons
         FrameLayout ticketContainer = new FrameLayout(context);
@@ -182,7 +182,7 @@ public class GameController {
         containerParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         containerParams.bottomMargin = 150; // Initially above the toggle button
         ticketContainer.setLayoutParams(containerParams);
-        rootLayout.addView(ticketContainer);
+        uiLayer.addView(ticketContainer);
 
         List<Button> ticketButtons = new ArrayList<>();
         int buttonSpacing = 150; // Space between buttons

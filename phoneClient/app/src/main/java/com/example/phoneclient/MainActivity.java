@@ -78,15 +78,20 @@ public class MainActivity extends AppCompatActivity {
         ));
         scrollView.addView(horizontalScrollView);
 
-        // Set the main content view
         setContentView(scrollView);
+
+        // Add `uiFrame` on top of everything
+        addContentView(uiFrame, new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+        ));
+
+        // Ensure `uiFrame` stays on top
+        uiFrame.bringToFront();
 
         // Initialize GameController and pass required parameters
         GameController gc = new GameController(this, rootLayout, uiFrame, gameId, hostStartLocation, playerId, hostID);
 
-        // Make `uiFrame` follow the scrolling position
-        scrollView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> uiFrame.setTranslationY(scrollY));
-        horizontalScrollView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> uiFrame.setTranslationX(scrollX));
 
         // Start the game after a delay to allow UI to initialize
         rootLayout.postDelayed(() -> gc.startGame(mapId), 1000);
