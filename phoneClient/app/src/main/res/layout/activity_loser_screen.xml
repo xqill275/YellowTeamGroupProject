@@ -36,7 +36,7 @@
         android:layout_width="365dp"
         android:layout_height="175dp"
         android:fontFamily="@font/aclonica"
-        android:text="Oh no! \nYou failed to find Nick! \n\n It looks like you're going to fail your assignment. "
+        android:text="GAME OVER! \n\n The winner is: "
         android:textAlignment="center"
         android:textColor="#F8F8F8"
         android:textSize="24sp"
