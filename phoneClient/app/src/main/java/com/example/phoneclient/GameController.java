@@ -1,6 +1,7 @@
 package com.example.phoneclient;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Canvas;
@@ -601,21 +602,30 @@ public class GameController {
                     int round = gameObject.getInt("round");
                     String state = gameObject.getString("state");
 
-                    // Determine whose turn it is
-                    String turnText = state.equals("Detective") ? "Detectives' Turn" : "Fugitive's Turn";
+                    if (state.equals("Over")) {
+                        // Start LoserScreen and pass gameID
+                        Intent intent = new Intent(context, LoserScreen.class);
+                        intent.putExtra("GAME_ID", gameId);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        context.startActivity(intent);
+                    } else {
+                        // Determine whose turn it is
+                        String turnText = state.equals("Detective") ? "Detectives' Turn" : "Fugitive's Turn";
 
-                    // Update UI on the main thread
-                    rootLayout.post(() -> updateGameStatus(round, turnText));
+                        // Update UI on the main thread
+                        rootLayout.post(() -> updateGameStatus(round, turnText));
+
+                        // Schedule next update in 2 seconds
+                        rootLayout.postDelayed(() -> fetchGameState(gameId), 2000);
+                    }
 
                 } catch (JSONException e) {
                     Log.e(TAG, "Error parsing game state", e);
                 }
             }
         });
-
-        // Schedule next update in 2 seconds
-        rootLayout.postDelayed(() -> fetchGameState(gameID), 1000);
     }
+
 
     private void initGameStatusDisplay() {
         gameStatusTextView = new TextView(context);
